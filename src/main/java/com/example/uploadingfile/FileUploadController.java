@@ -1,4 +1,4 @@
-package com.example.uploadingfile.storage;
+package com.example.uploadingfile;
 
 import java.io.IOException;
 import java.util.stream.Collectors;
@@ -19,11 +19,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.uploadingfile.storage.StorageFileNotFoundException;
+import com.example.uploadingfile.storage.StorageService;
+
 @Controller
 public class FileUploadController {
 
     private final StorageService storageService;
 
+    @Autowired
     public FileUploadController(StorageService storageService) {
         this.storageService = storageService;
     }
@@ -35,6 +39,7 @@ public class FileUploadController {
                 path -> MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
                         "serveFile", path.getFileName().toString()).build().toUri().toString())
                 .collect(Collectors.toList()));
+
         return "uploadForm";
     }
 
